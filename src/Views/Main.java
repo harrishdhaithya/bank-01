@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import controller.Bank;
 import controller.Otp;
+import fileaccess.FileAccess;
 import model.User;
 
 public class Main {
@@ -81,7 +82,7 @@ public class Main {
 		System.out.println("Enter Your Choice: ");
 		int ch = in.nextInt();
 		if(ch==1) {
-			ArrayList<User> al = Bank.getAllAccount();
+			ArrayList<User> al = FileAccess.getUsers();
 			if(al == null) {
 				System.out.println("No Accounts Available");
 			}
@@ -134,14 +135,14 @@ public class Main {
 				System.out.println("Try Again...");
 			}
 		}else if(ch == 3) {
-			System.out.println(Bank.loggedInUser);
+			Bank.showBalance(Bank.loggedInUser.getAccno().toString());
 		}else if(ch == 4){
 			in.nextLine();
 			System.out.println("Enter the Account Number: ");
 			String accno = in.nextLine();
 			System.out.println("Enter the Amount: ");
 			double amount = in.nextDouble();
-			boolean success = Bank.makeTransaction(Bank.loggedInUser, accno, amount);
+			boolean success = Bank.makeTransaction(Bank.loggedInUser.getAccno().toString(), accno, amount);
 			if(!success) {
 				System.out.println("Transaction Failed...");
 			}

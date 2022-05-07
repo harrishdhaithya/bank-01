@@ -7,6 +7,7 @@ import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 
 import de.taimos.totp.TOTP;
+import fileaccess.FileAccess;
 import model.Admin;
 import model.User;
 
@@ -26,11 +27,12 @@ public class TwoFAAuth {
 	    return base32.encodeToString(bytes);
 	}
 	public static boolean twoFA(User user) {
-		String secret = Bank.userSecrets.get(user);
+//		String secret = Bank.userSecrets.get(user);
+		String secret = FileAccess.getUserSecret().get(user.getAccno().toString());
 //		System.out.println(secret);
-		Scanner scanner = new Scanner(System.in);
+		Scanner in = new Scanner(System.in);
 		System.out.println("Enter the 6 digit key: ");
-		String code = scanner.nextLine();
+		String code = in.nextLine();
 		if (code.equals(getTOTPCode(secret))) {
 		    return true;
 		} else {
@@ -39,7 +41,8 @@ public class TwoFAAuth {
 		return false;
 	}
 	public static boolean twoFA(Admin admin) {
-		String secret = Bank.adminSecrets.get(admin);
+//		String secret = Bank.adminSecrets.get(admin);
+		String secret = FileAccess.getAdminSecret().get(admin.getEmpid().toString());
 //		System.out.println(secret);
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter the 6 digit key: ");
